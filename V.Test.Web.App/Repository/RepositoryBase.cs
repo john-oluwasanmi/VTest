@@ -20,7 +20,7 @@ namespace V.Test.Web.App.Repository
     {
         protected TEntity Entity { get; set; } = new TEntity();
         protected int SkippedDbRecordSize { get => MaxPageSize * (CurrentPageNumber - 1); }
-        protected short MaxPageSize { get => ConfigSetting.GetValue<short>("MaxPageSize"); }
+        protected short MaxPageSize { get => ConfigSetting.GetValue<short>("Settings:MaxPageSize"); }
 
         protected ILogger<TEntity> VLogger { get; set; }
 

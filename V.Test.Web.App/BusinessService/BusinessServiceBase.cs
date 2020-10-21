@@ -35,6 +35,7 @@ namespace V.Test.Web.App.BusinessService
                 throw new Exception($"Invalid {typeName}Id");
             }
 
+            item.IsDeleted = false;
             var id = await RepositoryManager.AddAsync(item);
             return id;
         }
@@ -67,6 +68,7 @@ namespace V.Test.Web.App.BusinessService
             CheckIfNull(item);
             ValidateId(item?.Id);
 
+            item.IsDeleted = false;
             await RepositoryManager.UpdateAsync(item);
         }
 

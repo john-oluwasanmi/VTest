@@ -76,7 +76,10 @@ namespace V.Test.Web.App.Controllers
 
         protected virtual async Task DeleteAsync(TviewModel item)
         {
+          
             TEntity result = MapViewModelToEntity(item);
+            result.IsDeleted = true;
+
             await BusinessServiceManager.DeleteAsync(result); ;
         }
 
