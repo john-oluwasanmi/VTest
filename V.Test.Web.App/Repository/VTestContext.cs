@@ -5,7 +5,7 @@ using V.Test.Web.App.Entities;
 
 namespace V.Test.Web.App.Repository
 {
-    public   class VTestsContext : DbContext
+    public class VTestsContext : DbContext
     {
         public VTestsContext()
         {
@@ -19,13 +19,17 @@ namespace V.Test.Web.App.Repository
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Organisation> Organisations { get; set; }
-         
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=VTestDb;Integrated Security=True;Pooling=False");
+            }
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Address>().ToTable("Address");
-            modelBuilder.Entity<Employee>().ToTable("Employee");
-            modelBuilder.Entity<Organisation>().ToTable("Organisation");
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
