@@ -10,7 +10,6 @@ namespace V.Test.Web.App.Entities.Interface
         int Id { get; set; }
         DateTime CreatedOn { get; set; }
         DateTime? ModifiedOn { get; set; }
-        string CreatedFrom { get; set; }
         bool? IsDeleted { get; set; }
     }
 }
