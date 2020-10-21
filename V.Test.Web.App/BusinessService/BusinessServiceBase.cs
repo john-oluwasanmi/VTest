@@ -55,8 +55,9 @@ namespace V.Test.Web.App.BusinessService
             return result;
         }
 
-        public virtual async Task<List<TEntity>> ListAsync(int pageNumber)
+        public virtual async Task<List<TEntity>> ListAsync(int pageNumber = 1)
         {
+            ValidateId(pageNumber);
             var result = await RepositoryManager.ListAsync(pageNumber);
             return result;
         }
@@ -67,8 +68,6 @@ namespace V.Test.Web.App.BusinessService
             ValidateId(item?.Id);
 
             await RepositoryManager.UpdateAsync(item);
-
-
         }
 
         public virtual async Task DeleteAsync(TEntity item)

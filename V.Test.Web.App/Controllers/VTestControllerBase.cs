@@ -35,18 +35,18 @@ namespace V.Test.Web.App.Controllers
             IMapper = ConfigureMapper().CreateMapper();
         }
 
-        public virtual void Add(TviewModel item)
+        public virtual async Task AddAsync(TviewModel item)
         {
             TEntity result = MapViewModelToEntity(item);
 
             SetAuditInformation(result, false);
 
-            BusinessServiceManager.AddAsync(result);
+           await BusinessServiceManager.AddAsync(result);
         }
 
 
 
-        protected virtual async Task<TviewModel> Get(int id)
+        protected virtual async Task<TviewModel> GetAsync(int id)
         {
             var entity = await BusinessServiceManager.GetAsync(id);
 
@@ -55,7 +55,7 @@ namespace V.Test.Web.App.Controllers
             return result;
         }
 
-        protected virtual async Task<List<TviewModel>> List(int pageNumber, int branchId)
+        protected virtual async Task<List<TviewModel>> ListAsync(int pageNumber )
         {
             var entities = await BusinessServiceManager.ListAsync(pageNumber);
 
@@ -64,22 +64,23 @@ namespace V.Test.Web.App.Controllers
             return result;
         }
 
-        protected virtual async Task Update(TviewModel item)
+        protected virtual async Task UpdateAsync(TviewModel item)
         {
-            var entity = await TrackedEntityForUpdate(item);
+
+            var entity = await TrackedEntityForUpdateAsync(item);
 
             SetUpdateAuditInformation(entity);
 
             await BusinessServiceManager.UpdateAsync(entity);
         }
 
-        protected virtual async Task Delete(TviewModel item)
+        protected virtual async Task DeleteAsync(TviewModel item)
         {
             TEntity result = MapViewModelToEntity(item);
             await BusinessServiceManager.DeleteAsync(result); ;
         }
 
-        protected async Task<TEntity> TrackedEntityForUpdate(TviewModel tviewModel)
+        protected async Task<TEntity> TrackedEntityForUpdateAsync(TviewModel tviewModel)
         {
             TEntity entity = await BusinessServiceManager.GetAsync(tviewModel.Id);
             return SetAuditInformation(tviewModel, entity);

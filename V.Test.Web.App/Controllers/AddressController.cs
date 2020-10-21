@@ -26,5 +26,74 @@ namespace V.Test.Web.App.Controllers
         {
             this._addressBusinessService = addressBusinessService;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = new AddressViewModel { };
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index([FromForm]AddressViewModel item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+
+            await base.AddAsync(item);
+
+            return RedirectToAction(nameof(AddressController.List), "Address");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> View(int id)
+        {
+            var viewModel = await base.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List(int pageNumber)
+        {
+            var viewModels = await base.ListAsync(pageNumber); ;
+            return View(viewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var viewModel = await BusinessServiceManager.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update([FromForm]AddressViewModel item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+
+            await base.UpdateAsync(item);
+
+            return RedirectToAction(nameof(AddressController.List), "Address");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var viewModel = await BusinessServiceManager.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete([FromForm] AddressViewModel item)
+        {
+            await base.DeleteAsync(item);
+            return RedirectToAction(nameof(AddressController.List), "Address");
+        }
     }
 }

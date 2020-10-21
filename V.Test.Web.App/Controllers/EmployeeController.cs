@@ -22,5 +22,74 @@ namespace V.Test.Web.App.Controllers
             : base(logger, employeeBusinessService, configuration)
         {
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var viewModel = new EmployeeViewModel { };
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index([FromForm]EmployeeViewModel item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+
+            await base.AddAsync(item);
+
+            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> View(int id)
+        {
+            var viewModel = await base.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> List(int pageNumber)
+        {
+            var viewModels = await base.ListAsync(pageNumber); ;
+            return View(viewModels);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var viewModel = await BusinessServiceManager.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update([FromForm]EmployeeViewModel item)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(item);
+            }
+
+            await base.UpdateAsync(item);
+
+            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var viewModel = await BusinessServiceManager.GetAsync(id);
+            return View(viewModel);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete([FromForm] EmployeeViewModel item)
+        {
+            await base.DeleteAsync(item);
+            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+        }
     }
 }

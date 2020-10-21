@@ -33,6 +33,11 @@ namespace V.Test.Web.App.Repository
 
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
+            modelBuilder.Entity<Address>().ToTable("Address");
+            modelBuilder.Entity<Employee>().ToTable("Employee");
+            modelBuilder.Entity<Organisation>().ToTable("Organisation");
+
+
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.Property(e => e.AddressLine1)
