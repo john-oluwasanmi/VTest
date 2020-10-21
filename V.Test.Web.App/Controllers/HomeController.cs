@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using V.Test.Models;
+using V.Test.Web.App.Models;
 
-namespace V.Test.Controllers
+namespace V.Test.Web.App.Controllers
 {
     public class HomeController : Controller
     {
