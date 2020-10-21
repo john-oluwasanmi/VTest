@@ -5,8 +5,22 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Core\Interfaces\**" />
+    <Content Remove="Core\Interfaces\**" />
+    <EmbeddedResource Remove="Core\Interfaces\**" />
+    <None Remove="Core\Interfaces\**" />
+  </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Core\ConfigSetting.cs" />
+    <Compile Remove="Core\VLogger.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="log4net" Version="2.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
