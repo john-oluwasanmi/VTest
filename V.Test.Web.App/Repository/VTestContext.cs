@@ -16,9 +16,9 @@ namespace V.Test.Web.App.Repository
         {
         }
 
-        public virtual DbSet<Address> Address { get; set; }
-        public virtual DbSet<Employee> Employee { get; set; }
-        public virtual DbSet<Organisation> Organisation { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Organisation> Organisations { get; set; }
          
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
