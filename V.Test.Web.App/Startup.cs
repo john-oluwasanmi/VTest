@@ -10,6 +10,9 @@ using Newtonsoft.Json.Serialization;
 using V.Test.Web.App.Core;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using V.Test.Web.App.Repository;
+using Microsoft.EntityFrameworkCore;
+
 namespace V.Test.Web.App
 {
     public class Startup
@@ -24,6 +27,12 @@ namespace V.Test.Web.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddDbContext<VTestsContext>(options =>
+                            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
