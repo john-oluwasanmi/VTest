@@ -8,5 +8,6 @@ namespace V.Test.Web.App.Repository.Interface
 {
     public interface IEmployeeRepository : IRepository<Employee>
     {
+        Task<List<Employee>> ListByOrganisationAsync(int organisationId, int pageNumber);
     }
 }
