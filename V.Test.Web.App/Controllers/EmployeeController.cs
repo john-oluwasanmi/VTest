@@ -53,7 +53,9 @@ namespace V.Test.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> List(int organisationId, int pageNumber = 1)
         {
-            var viewModels = await base.ListAsync(pageNumber); ;
+            var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId,pageNumber);
+            var viewModels = ConvertEntityToViewModel(entities);
+
             return View(viewModels);
         }
 
