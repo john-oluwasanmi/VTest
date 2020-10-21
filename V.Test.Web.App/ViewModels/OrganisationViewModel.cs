@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using V.Test.Web.Api.Entities;
+﻿using System.Collections.Generic;
+using V.Test.Web.App.Entities;
 
 namespace V.Test.Web.App.ViewModels
 {
