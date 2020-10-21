@@ -55,7 +55,7 @@ namespace V.Test.Web.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(int pageNumber)
+        public async Task<IActionResult> List(int pageNumber = 1)
         {
             var viewModels = await base.ListAsync(pageNumber); ;
             return View(viewModels);

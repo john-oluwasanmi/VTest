@@ -17,7 +17,7 @@ namespace V.Test.Web.App.Controllers
         private readonly IHtmlHelper _htmlHelper;
 
         public OrganisationController(ILogger<Organisation> logger
-                                , IOrganisationBusinessService  organisationBusinessService
+                                , IOrganisationBusinessService organisationBusinessService
                                 , IConfiguration configuration)
             : base(logger, organisationBusinessService, configuration)
         {
@@ -51,7 +51,7 @@ namespace V.Test.Web.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(int pageNumber)
+        public async Task<IActionResult> List( int pageNumber = 1)
         {
             var viewModels = await base.ListAsync(pageNumber); ;
             return View(viewModels);
