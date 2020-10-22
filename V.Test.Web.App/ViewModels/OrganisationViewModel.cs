@@ -8,7 +8,7 @@ namespace V.Test.Web.App.ViewModels
     {
 
         [Required]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
         [Required]
         [Display(Name ="Name")]

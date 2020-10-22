@@ -11,8 +11,6 @@ namespace V.Test.Web.App.ViewModels
         public int Id { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string CreatedFrom { get; set; }
-        public string ModifiedBy { get; set; }
-        public string CreatedBy { get; set; }
+        
     }
 }
