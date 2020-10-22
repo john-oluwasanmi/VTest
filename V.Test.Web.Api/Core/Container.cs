@@ -23,7 +23,7 @@ namespace V.Test.Web.App.Core
         {
             services.AddScoped<IOrganisationRepository, OrganisationRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<AddressRepository, AddressRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace V.Test.Web.Api.Controllers
         [ProducesResponseType(500)]
 
         [ProducesResponseType(404)]
-        public async Task<IActionResult> ListAsync(int branchId, int pageNumber)
+        public async Task<IActionResult> ListAsync( int pageNumber=1)
         {
             return await base.ListAsync(pageNumber);
         }
