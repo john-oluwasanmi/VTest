@@ -12,7 +12,7 @@ namespace V.Test.Web.App.Entities
         }
 
   
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
 
         [Required]
         public string OrganisationName { get; set; }
