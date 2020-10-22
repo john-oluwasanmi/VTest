@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using V.Test.Web.App.Filter;
 
 namespace V.Test.Web.App
 {
@@ -45,7 +46,11 @@ namespace V.Test.Web.App
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new ActionFilterAttribute { });
+                options.Filters.Add(new ExceptionHandlerFilterAttribute { });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                  .AddJsonOptions(options =>
                  {
                      options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -62,6 +67,9 @@ namespace V.Test.Web.App
             services.AddSingleton(mapper);
 
             services.AddAntiforgery();
+
+            services.AddScoped<ActionFilterAttribute>();
+            services.AddScoped<ExceptionHandlerFilterAttribute>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
