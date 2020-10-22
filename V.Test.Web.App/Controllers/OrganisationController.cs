@@ -14,19 +14,21 @@ namespace V.Test.Web.App.Controllers
 {
     public class OrganisationController : VTestControllerBase<OrganisationViewModel, Organisation, IOrganisationBusinessService>
     {
-        private readonly IHtmlHelper _htmlHelper;
+        private readonly IAddressBusinessService _addressBusinessService;
 
         public OrganisationController(ILogger<Organisation> logger
                                 , IOrganisationBusinessService organisationBusinessService
+                                , IAddressBusinessService addressBusinessService
                                 , IConfiguration configuration)
             : base(logger, organisationBusinessService, configuration)
         {
+            this._addressBusinessService = addressBusinessService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new OrganisationViewModel { };
+            var viewModel = new OrganisationViewModel { AddressId = 0, Address = new Address { Id = 0 } };
             return View(viewModel);
         }
 
@@ -51,7 +53,7 @@ namespace V.Test.Web.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List( int pageNumber = 1)
+        public async Task<IActionResult> List(int pageNumber = 1)
         {
             var viewModels = await base.ListAsync(pageNumber); ;
             return View(viewModels);
@@ -73,6 +75,7 @@ namespace V.Test.Web.App.Controllers
                 return View(item);
             }
 
+            await UpdateAddress(item);
             await base.UpdateAsync(item);
 
             return RedirectToAction(nameof(OrganisationController.List), "Organisation");
@@ -93,5 +96,18 @@ namespace V.Test.Web.App.Controllers
             await base.DeleteAsync(item);
             return RedirectToAction(nameof(OrganisationController.List), "Organisation");
         }
+
+        private async Task UpdateAddress(OrganisationViewModel item)
+        {
+            var newAddress = item.Address;
+            var oldAddress = await _addressBusinessService.GetAsync(item.AddressId ?? 0);
+
+            var createdDate = oldAddress.CreatedOn;
+            newAddress.CreatedOn = createdDate;
+
+            SetAuditInformation<Address>(newAddress, isUpdate: true);
+            await _addressBusinessService.UpdateAsync(newAddress);
+        }
+
     }
 }

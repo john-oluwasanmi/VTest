@@ -13,9 +13,11 @@
         <form asp-action="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @Html.EditorFor(r => r.Address, "_Address")
 
-            <div class="form-group">
+
+
+
+            <div class="form-group mt-1">
                 <label asp-for="OrganisationName" class="control-label"></label>
                 <input asp-for="OrganisationName" class="form-control" />
                 <span asp-validation-for="OrganisationName" class="text-danger"></span>
@@ -31,9 +33,12 @@
                 <a asp-action="View" asp-route-id="@Model.Id" class="btn btn-success   mr-1">Back</a>
                 <input type="submit" value="Save" class="btn btn-success   mr-1" />
             </div>
-
             @Html.HiddenFor(r => r.Id)
             @Html.HiddenFor(r => r.AddressId)
+
+            @Html.EditorFor(r => r.Address, "_Address")
+
+
 
 
         </form>

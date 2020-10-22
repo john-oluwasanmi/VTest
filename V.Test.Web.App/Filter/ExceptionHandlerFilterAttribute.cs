@@ -14,7 +14,6 @@ namespace V.Test.Web.App.Filter
         public void OnException(ExceptionContext filterContext)
         {
             //var logger = ( )filterContext?.HttpContext?.RequestServices?.GetService(typeof( ));
-            //_configSetting = (IConfigSetting)filterContext?.HttpContext?.RequestServices?.GetService(typeof(Icon));
 
             var exceptionMessage = filterContext?.Exception?.Message;
             var exceptionStackTrack = filterContext?.Exception?.StackTrace;
@@ -23,14 +22,12 @@ namespace V.Test.Web.App.Filter
             var actionName = filterContext?.RouteData?.Values["action"]?.ToString();
             var exceptionLogTime = DateTime.UtcNow;
 
-            var execption = JsonConvert.SerializeObject(filterContext?.Exception);
+           // var execption = JsonConvert.SerializeObject(filterContext?.Exception,   JsonSerializerSettings.  );
 
             //logger.Error($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack}" +
             //             $",Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException}" +
             //             $", Time : {exceptionLogTime}, exception : {execption} ");
 
-            filterContext.ExceptionHandled = true;
-            var brandName = filterContext?.RouteData?.Values["brandName"]?.ToString();
 
             string url = $"~/Home/Error";
             filterContext.Result = new RedirectResult(url);
