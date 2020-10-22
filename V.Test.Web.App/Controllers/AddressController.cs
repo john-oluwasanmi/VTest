@@ -85,7 +85,8 @@ namespace V.Test.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var viewModel = await BusinessServiceManager.GetAsync(id);
+            var entity = await BusinessServiceManager.GetAsync(id);
+            var viewModel = ConvertEntityToViewModel(entity);
             return View(viewModel);
         }
 

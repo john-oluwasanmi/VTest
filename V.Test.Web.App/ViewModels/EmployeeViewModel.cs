@@ -9,9 +9,11 @@ namespace V.Test.Web.App.ViewModels
         public int OrganisationId { get; set; }
 
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         public virtual Organisation Organisation { get; set; }

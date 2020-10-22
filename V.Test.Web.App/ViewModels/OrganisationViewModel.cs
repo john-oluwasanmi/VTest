@@ -11,9 +11,11 @@ namespace V.Test.Web.App.ViewModels
         public int AddressId { get; set; }
 
         [Required]
+        [Display(Name ="Name")]
         public string OrganisationName { get; set; }
 
         [Required]
+        [Display(Name = "Number")]
         public string OrganisationNumber { get; set; }
 
         public virtual Address Address { get; set; }
