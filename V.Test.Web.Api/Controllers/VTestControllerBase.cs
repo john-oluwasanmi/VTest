@@ -65,22 +65,17 @@ namespace V.Test.Web.Api.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                if (User.Identity.IsAuthenticated)
-                {
-                    TEntity result = MapViewModelToEntity(item);
 
-                      SetAuditInformation(result);
+                TEntity result = MapViewModelToEntity(item);
 
-                    await BusinessServiceManager.AddAsync(result);
+                SetAuditInformation(result);
 
-                    var name = typeof(TEntity).Name;
+                await BusinessServiceManager.AddAsync(result);
 
-                    return Created($"http://localhost:5000/{name}/{result.Id}", result);
-                }
-                else
-                {
-                    return Unauthorized();
-                }
+                var name = typeof(TEntity).Name;
+
+                return Created($"http://localhost:5000/{name}/{result.Id}", result);
+
             }
             catch (Exception ex)
             {
@@ -96,24 +91,17 @@ namespace V.Test.Web.Api.Controllers
         {
             try
             {
-                if (User.Identity.IsAuthenticated)
+                var entity = await BusinessServiceManager.GetAsync(id);
+
+                TviewModel result = ConvertEntityToViewModel(entity);
+
+                if (result == null)
                 {
-
-                    var entity = await BusinessServiceManager.GetAsync(id);
-
-                    TviewModel result = ConvertEntityToViewModel(entity);
-
-                    if (result == null)
-                    {
-                        return NotFound(id);
-                    }
-
-                    return Ok(result);
+                    return NotFound(id);
                 }
-                else
-                {
-                    return Unauthorized();
-                }
+
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
@@ -129,26 +117,19 @@ namespace V.Test.Web.Api.Controllers
             {
                 CurrentPageNumber = pageNumber ?? 0;
 
-                if (User.Identity.IsAuthenticated)
+                var entities = await BusinessServiceManager.ListAsync(CurrentPageNumber) as List<TEntity>;
+
+                CurrentPageNumber = 0;
+
+                if (entities == null || !entities.Any())
                 {
-
-                    var entities = await BusinessServiceManager.ListAsync(CurrentPageNumber) as List<TEntity>;
-
-                    CurrentPageNumber = 0;
-
-                    if (entities == null || !entities.Any())
-                    {
-                        return NotFound();
-                    }
-
-                    var result = IMapper.Map<List<TEntity>, List<TviewModel>>(entities);
-
-                    return Ok(result);
+                    return NotFound();
                 }
-                else
-                {
-                    return Unauthorized();
-                }
+
+                var result = IMapper.Map<List<TEntity>, List<TviewModel>>(entities);
+
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
@@ -167,25 +148,19 @@ namespace V.Test.Web.Api.Controllers
                     return BadRequest("Invalid State");
                 }
 
-                if (User.Identity.IsAuthenticated)
+                var entity = await TrackedEntityForUpdateAsync(item);
+
+                if (entity == null)
                 {
-                    var entity = await TrackedEntityForUpdateAsync(item);
-
-                    if (entity == null)
-                    {
-                        return NotFound(item.Id);
-                    }
-
-                      SetAuditInformation(entity, true);
-
-                    await BusinessServiceManager.UpdateAsync(entity);
-
-                    return Ok();
+                    return NotFound(item.Id);
                 }
-                else
-                {
-                    return Unauthorized();
-                }
+
+                SetAuditInformation(entity, true);
+
+                await BusinessServiceManager.UpdateAsync(entity);
+
+                return Ok();
+
             }
             catch (Exception ex)
             {
@@ -199,26 +174,21 @@ namespace V.Test.Web.Api.Controllers
         {
             try
             {
-                if (User.Identity.IsAuthenticated)
+
+                var entity = await BusinessServiceManager.GetAsync(item.Id);
+
+                if (entity == null)
                 {
-                    var entity = await BusinessServiceManager.GetAsync(item.Id);
-
-                    if (entity == null)
-                    {
-                        return NotFound(item.Id);
-                    }
-
-                      SetAuditInformation(entity, true);
-
-                    entity.IsDeleted = true;
-                    await BusinessServiceManager.DeleteAsync(entity);
-
-                    return Ok();
+                    return NotFound(item.Id);
                 }
-                else
-                {
-                    return Unauthorized();
-                }
+
+                SetAuditInformation(entity, true);
+
+                entity.IsDeleted = true;
+                await BusinessServiceManager.DeleteAsync(entity);
+
+                return Ok();
+
             }
             catch (Exception ex)
             {
@@ -369,7 +339,7 @@ namespace V.Test.Web.Api.Controllers
             entity.ModifiedOn = date;
         }
 
-         
+
     }
 
 
