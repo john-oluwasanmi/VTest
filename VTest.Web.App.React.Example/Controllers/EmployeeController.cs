@@ -15,18 +15,22 @@ namespace V.Test.Web.App.Controllers
     public class EmployeeController : VTestControllerBase<EmployeeViewModel, Employee, IEmployeeBusinessService>
     {
         private readonly IHtmlHelper _htmlHelper;
+        private readonly IOrganisationBusinessService _organisationBusinessService;
 
         public EmployeeController(ILogger<Employee> logger
                                 , IEmployeeBusinessService employeeBusinessService
+                                , IOrganisationBusinessService organisationBusinessService
                                 , IConfiguration configuration)
             : base(logger, employeeBusinessService, configuration)
         {
+            this._organisationBusinessService = organisationBusinessService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var viewModel = new EmployeeViewModel { };
+            var organisationList = await ListOrganisations();
+            var viewModel = new EmployeeViewModel { OrganisationList = organisationList };
             return View(viewModel);
         }
 
@@ -53,7 +57,7 @@ namespace V.Test.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> List(int organisationId, int pageNumber = 1)
         {
-            var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId,pageNumber);
+            var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId, pageNumber);
             var viewModels = ConvertEntityToViewModel(entities);
 
             return View(viewModels);
@@ -62,7 +66,8 @@ namespace V.Test.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var viewModel = await BusinessServiceManager.GetAsync(id);
+            var entity = await BusinessServiceManager.GetAsync(id);
+            var viewModel = ConvertEntityToViewModel(entity);
             return View(viewModel);
         }
 
@@ -83,7 +88,8 @@ namespace V.Test.Web.App.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var viewModel = await BusinessServiceManager.GetAsync(id);
+            var entity = await BusinessServiceManager.GetAsync(id);
+            var viewModel = ConvertEntityToViewModel(entity);
             return View(viewModel);
         }
 
@@ -92,6 +98,26 @@ namespace V.Test.Web.App.Controllers
         {
             await base.DeleteAsync(item);
             return RedirectToAction(nameof(EmployeeController.List), "Employee");
+        }
+
+        private async Task<List<OrganisationViewModel>> FetchOrganisation()
+        {
+            List<Organisation> organisations = await _organisationBusinessService.ListAsync(1);
+            List<OrganisationViewModel> organisationsViewModels = ConvertEntityToViewModel<Organisation, OrganisationViewModel>(organisations);
+            return organisationsViewModels;
+        }
+        private async Task<IEnumerable<SelectListItem>> ListOrganisations()
+        {
+            var ordered = await FetchOrganisation();
+
+            var organisationLists = from it in ordered
+                                    select new SelectListItem
+                                    {
+                                        Text = it.OrganisationName,
+                                        Value = it.Id.ToString()
+                                    };
+
+            return organisationLists;
         }
     }
 }
