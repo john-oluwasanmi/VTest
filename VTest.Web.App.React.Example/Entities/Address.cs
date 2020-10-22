@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace V.Test.Web.App.Entities
+namespace V.Test.Web.Api.Entities
 {
     public   class Address : Entity
     {

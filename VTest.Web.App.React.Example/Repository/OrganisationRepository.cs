@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
-using V.Test.Web.App.Entities;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.Entities;
+using V.Test.Web.Api.Repository.Interface;
 
-namespace V.Test.Web.App.Repository
+namespace V.Test.Web.Api.Repository
 {
     public   class OrganisationRepository : RepositoryBase<Organisation>,
         IOrganisationRepository

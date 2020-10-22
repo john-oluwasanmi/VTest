@@ -7,13 +7,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.BusinessService.Interface;
+using V.Test.Web.Api.BusinessService.Interface;
 using V.Test.Web.App.Core;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.Entities.Interface;
 using V.Test.Web.App.ViewModels.Interface;
 
-namespace V.Test.Web.App.Controllers
+namespace V.Test.Web.Api.Controllers
 {
+    [Route("api/[controller]")]
     public abstract class VTestControllerBase<TviewModel, TEntity, TBusinessServiceManager>
         : VTestControllerBase
         where TEntity : class, IEntity, new()
@@ -26,6 +27,24 @@ namespace V.Test.Web.App.Controllers
         protected readonly TBusinessServiceManager BusinessServiceManager;
         protected readonly IMapper IMapper;
 
+        protected int CurrentPageNumber
+        {
+            get
+            {
+                if (_currentPageNumber < 1)
+                {
+                    _currentPageNumber = 1;
+                }
+                return _currentPageNumber;
+            }
+            set
+            {
+                _currentPageNumber = value;
+            }
+        }
+        private int _currentPageNumber { get; set; }
+
+
         public VTestControllerBase(ILogger<TEntity> logger
                                     , TBusinessServiceManager businessService
                                     , IConfiguration configuration)
@@ -35,52 +54,191 @@ namespace V.Test.Web.App.Controllers
             IMapper = ConfigureMapper().CreateMapper();
         }
 
-        public virtual async Task AddAsync(TviewModel item)
+
+        [HttpPost]
+        protected virtual async Task<IActionResult> AddAsync(TviewModel item)
         {
-            TEntity result = MapViewModelToEntity(item);
+            try
+            {
+                if (item == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
 
-            SetAuditInformation(result, false);
+                if (User.Identity.IsAuthenticated)
+                {
+                    TEntity result = MapViewModelToEntity(item);
 
-           await BusinessServiceManager.AddAsync(result);
+                      SetAuditInformation(result);
+
+                    await BusinessServiceManager.AddAsync(result);
+
+                    var name = typeof(TEntity).Name;
+
+                    return Created($"http://localhost:5000/{name}/{result.Id}", result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return StatusCode(500);
+            }
         }
 
 
 
-        protected virtual async Task<TviewModel> GetAsync(int id)
+        [HttpGet]
+        protected virtual async Task<IActionResult> GetAsync(int id)
         {
-            var entity = await BusinessServiceManager.GetAsync(id);
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
 
-            TviewModel result = ConvertEntityToViewModel(entity);
+                    var entity = await BusinessServiceManager.GetAsync(id);
 
-            return result;
+                    TviewModel result = ConvertEntityToViewModel(entity);
+
+                    if (result == null)
+                    {
+                        return NotFound(id);
+                    }
+
+                    return Ok(result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return StatusCode(500);
+            }
         }
 
-        protected virtual async Task<List<TviewModel>> ListAsync(int pageNumber )
+        [HttpGet]
+        protected virtual async Task<IActionResult> ListAsync([FromQuery]int? pageNumber)
         {
-            var entities = await BusinessServiceManager.ListAsync(pageNumber);
+            try
+            {
+                CurrentPageNumber = pageNumber ?? 0;
 
-            var result = IMapper.Map<List<TEntity>, List<TviewModel>>(entities);
+                if (User.Identity.IsAuthenticated)
+                {
 
-            return result;
+                    var entities = await BusinessServiceManager.ListAsync(CurrentPageNumber) as List<TEntity>;
+
+                    CurrentPageNumber = 0;
+
+                    if (entities == null || !entities.Any())
+                    {
+                        return NotFound();
+                    }
+
+                    var result = IMapper.Map<List<TEntity>, List<TviewModel>>(entities);
+
+                    return Ok(result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return StatusCode(500);
+            }
         }
 
-        protected virtual async Task UpdateAsync(TviewModel item)
+        [HttpPut("{id}")]
+        protected virtual async Task<IActionResult> UpdateAsync(TviewModel item)
         {
+            try
+            {
+                if (item == null || !ModelState.IsValid)
+                {
+                    return BadRequest("Invalid State");
+                }
 
-            var entity = await TrackedEntityForUpdateAsync(item);
+                if (User.Identity.IsAuthenticated)
+                {
+                    var entity = await TrackedEntityForUpdateAsync(item);
 
-            SetAuditInformation(entity, isUpdate: true);
+                    if (entity == null)
+                    {
+                        return NotFound(item.Id);
+                    }
 
-            await BusinessServiceManager.UpdateAsync(entity);
+                      SetAuditInformation(entity, true);
+
+                    await BusinessServiceManager.UpdateAsync(entity);
+
+                    return Ok();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return StatusCode(500);
+            }
         }
 
-        protected virtual async Task DeleteAsync(TviewModel item)
+        [HttpDelete]
+        protected virtual async Task<IActionResult> DeleteAsync(TviewModel item)
         {
-          
-            TEntity result = MapViewModelToEntity(item);
-            result.IsDeleted = true;
+            try
+            {
+                if (User.Identity.IsAuthenticated)
+                {
+                    var entity = await BusinessServiceManager.GetAsync(item.Id);
 
-            await BusinessServiceManager.DeleteAsync(result); ;
+                    if (entity == null)
+                    {
+                        return NotFound(item.Id);
+                    }
+
+                      SetAuditInformation(entity, true);
+
+                    entity.IsDeleted = true;
+                    await BusinessServiceManager.DeleteAsync(entity);
+
+                    return Ok();
+                }
+                else
+                {
+                    return Unauthorized();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                return StatusCode(500);
+            }
+        }
+
+        protected void LogException(Exception Exception)
+        {
+            var exceptionMessage = Exception?.Message;
+            var exceptionStackTrack = Exception?.StackTrace;
+            var innerException = Exception?.InnerException?.Message;
+            var controllerName = RouteData?.Values["controller"]?.ToString();
+            var actionName = RouteData?.Values["action"]?.ToString();
+            var exceptionLogTime = DateTime.UtcNow;
+
+            VTestLogger.LogError($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack}" +
+                $",Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException}, Time : {exceptionLogTime} ");
+
         }
 
         protected async Task<TEntity> TrackedEntityForUpdateAsync(TviewModel tviewModel)

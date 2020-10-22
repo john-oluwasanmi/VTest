@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using V.Test.Web.App.BusinessService;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Repository;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.BusinessService;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Repository;
+using V.Test.Web.Api.Repository.Interface;
 
 namespace V.Test.Web.App.Core
 {

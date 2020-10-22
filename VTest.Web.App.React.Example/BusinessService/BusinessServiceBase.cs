@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Entities.Interface;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.Repository.Interface;
 
-namespace V.Test.Web.App.BusinessService
+namespace V.Test.Web.Api.BusinessService
 {
     public class BusinessServiceBase<TEntity, TRepositoryManager> : IBusinessService<TEntity>
        where TEntity : IEntity, new()

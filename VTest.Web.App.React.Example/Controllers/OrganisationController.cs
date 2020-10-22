@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Entities;
 using V.Test.Web.App.ViewModels;
 
-namespace V.Test.Web.App.Controllers
+namespace V.Test.Web.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class OrganisationController : VTestControllerBase<OrganisationViewModel, Organisation, IOrganisationBusinessService>
     {
         private readonly IAddressBusinessService _addressBusinessService;
@@ -24,90 +21,52 @@ namespace V.Test.Web.App.Controllers
         {
             this._addressBusinessService = addressBusinessService;
         }
-
         [HttpGet]
-        public async Task<IActionResult> Index()
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ListAsync(int branchId, int pageNumber)
         {
-            var viewModel = new OrganisationViewModel { AddressId = 0, Address = new Address { Id = 0 } };
-            return View(viewModel);
+            return await base.ListAsync(pageNumber);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([FromForm]OrganisationViewModel item)
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public new async Task<IActionResult> GetAsync(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(item);
-            }
-
-            await base.AddAsync(item);
-
-            return RedirectToAction(nameof(OrganisationController.List), "Organisation");
+            return await base.GetAsync(id);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> View(int id)
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public new async Task<IActionResult> AddAsync([FromBody]OrganisationViewModel item)
         {
-            var viewModel = await base.GetAsync(id);
-            return View(viewModel);
+            return await base.AddAsync(item);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> List(int pageNumber = 1)
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] OrganisationViewModel item)
         {
-            var viewModels = await base.ListAsync(pageNumber); ;
-            return View(viewModels);
+            item.Id = id;
+            return await base.UpdateAsync(item);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
+            return await base.DeleteAsync(new OrganisationViewModel { Id = id });
+
         }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update([FromForm]OrganisationViewModel item)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(item);
-            }
-
-            await UpdateAddress(item);
-            await base.UpdateAsync(item);
-
-            return RedirectToAction(nameof(OrganisationController.List), "Organisation");
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromForm] OrganisationViewModel item)
-        {
-            await base.DeleteAsync(item);
-            return RedirectToAction(nameof(OrganisationController.List), "Organisation");
-        }
-
-        private async Task UpdateAddress(OrganisationViewModel item)
-        {
-            var newAddress = item.Address;
-            var oldAddress = await _addressBusinessService.GetAsync(item.AddressId ?? 0);
-
-            var createdDate = oldAddress.CreatedOn;
-            newAddress.CreatedOn = createdDate;
-
-            SetAuditInformation<Address>(newAddress, isUpdate: true);
-            await _addressBusinessService.UpdateAsync(newAddress);
-        }
-
     }
 }

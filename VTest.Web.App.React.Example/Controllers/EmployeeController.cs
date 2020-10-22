@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Entities;
 using V.Test.Web.App.ViewModels;
 
-namespace V.Test.Web.App.Controllers
+namespace V.Test.Web.Api.Controllers
 {
+    [Route("api/[controller]")]
     public class EmployeeController : VTestControllerBase<EmployeeViewModel, Employee, IEmployeeBusinessService>
     {
         private readonly IHtmlHelper _htmlHelper;
@@ -27,97 +28,92 @@ namespace V.Test.Web.App.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ListAsync(int branchId, int pageNumber)
         {
-            var organisationList = await ListOrganisations();
-            var viewModel = new EmployeeViewModel { OrganisationList = organisationList };
-            return View(viewModel);
+            return await base.ListAsync(pageNumber);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([FromForm]EmployeeViewModel item)
+
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ListByOrganisationAsync(int organisationId, int pageNumber = 1)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(item);
+                CurrentPageNumber = pageNumber  ;
+
+                if (User.Identity.IsAuthenticated)
+                {
+
+                    var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId, CurrentPageNumber);
+
+                    CurrentPageNumber = 0;
+
+                    if (entities == null || !entities.Any())
+                    {
+                        return NotFound();
+                    }
+
+                    var result = IMapper.Map<List<Employee>, List<EmployeeViewModel>>(entities);
+
+                    return Ok(result);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
-
-            await base.AddAsync(item);
-
-            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId  = item.OrganisationId});
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> View(int id)
-        {
-            var viewModel = await base.GetAsync(id);
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> List(int organisationId, int pageNumber = 1)
-        {
-            var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId, pageNumber);
-            var viewModels = ConvertEntityToViewModel(entities);
-
-            return View(viewModels);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update([FromForm]EmployeeViewModel item)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return View(item);
+                LogException(ex);
+                return StatusCode(500);
             }
-
-            await base.UpdateAsync(item);
-
-            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId = item.OrganisationId });
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public new async Task<IActionResult> GetAsync(int id)
         {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
+            return await base.GetAsync(id);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromForm] EmployeeViewModel item)
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public new async Task<IActionResult> AddAsync([FromBody]EmployeeViewModel item)
         {
-            await base.DeleteAsync(item);
-            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId = item.OrganisationId });
+            return await base.AddAsync(item);
         }
 
-        private async Task<List<OrganisationViewModel>> FetchOrganisation()
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] EmployeeViewModel item)
         {
-            List<Organisation> organisations = await _organisationBusinessService.ListAsync(1);
-            List<OrganisationViewModel> organisationsViewModels = ConvertEntityToViewModel<Organisation, OrganisationViewModel>(organisations);
-            return organisationsViewModels;
+            item.Id = id;
+            return await base.UpdateAsync(item);
         }
-        private async Task<IEnumerable<SelectListItem>> ListOrganisations()
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var ordered = await FetchOrganisation();
+            return await base.DeleteAsync(new EmployeeViewModel { Id = id });
 
-            var organisationLists = from it in ordered
-                                    select new SelectListItem
-                                    {
-                                        Text = it.OrganisationName,
-                                        Value = it.Id.ToString()
-                                    };
-
-            return organisationLists;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.Entities;
 
 namespace V.Test.Web.App.ViewModels
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.Entities;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.Entities;
+using V.Test.Web.Api.Repository.Interface;
 
-namespace V.Test.Web.App.Repository
+namespace V.Test.Web.Api.Repository
 {
     public   class AddressRepository : RepositoryBase<Address>,
         IAddressRepository

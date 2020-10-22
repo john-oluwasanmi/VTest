@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.Entities;
 using V.Test.Web.App.ViewModels;
 
 namespace V.Test.Web.App.Core

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Entities;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Entities;
+using V.Test.Web.Api.Repository.Interface;
 
-namespace V.Test.Web.App.BusinessService
+namespace V.Test.Web.Api.BusinessService
 {
     public   class EmployeeBusinessService : BusinessServiceBase<Employee, IEmployeeRepository>
         , IEmployeeBusinessService

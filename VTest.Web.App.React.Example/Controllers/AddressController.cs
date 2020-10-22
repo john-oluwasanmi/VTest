@@ -6,18 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.BusinessService;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.BusinessService;
+using V.Test.Web.Api.BusinessService.Interface;
+using V.Test.Web.Api.Entities;
 using V.Test.Web.App.ViewModels;
 
-namespace V.Test.Web.App.Controllers
+namespace V.Test.Web.Api.Controllers
 {
-
+    [Route("api/[controller]")]
     public class AddressController : VTestControllerBase<AddressViewModel, Address, IAddressBusinessService>
     {
         private readonly IAddressBusinessService _addressBusinessService;
-        private readonly IHtmlHelper _htmlHelper;
 
         public AddressController(ILogger<Address> logger
                                 , IAddressBusinessService addressBusinessService
@@ -27,75 +26,54 @@ namespace V.Test.Web.App.Controllers
             this._addressBusinessService = addressBusinessService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var viewModel = new AddressViewModel { };
-            return View(viewModel);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([FromForm]AddressViewModel item)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(item);
-            }
-
-            await base.AddAsync(item);
-
-            return RedirectToAction(nameof(AddressController.List), "Address");
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> View(int id)
-        {
-            var viewModel = await base.GetAsync(id);
-            return View(viewModel);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> List(int pageNumber = 1)
-        {
-            var viewModels = await base.ListAsync(pageNumber); ;
-            return View(viewModels);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update([FromForm]AddressViewModel item)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(item);
-            }
-
-            await base.UpdateAsync(item);
-
-            return RedirectToAction(nameof(AddressController.List), "Address");
-        }
 
 
         [HttpGet]
-        public async Task<IActionResult> Delete(int id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> ListAsync(int branchId, int pageNumber)
         {
-            var entity = await BusinessServiceManager.GetAsync(id);
-            var viewModel = ConvertEntityToViewModel(entity);
-            return View(viewModel);
+            return await base.ListAsync(pageNumber);
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete([FromForm] AddressViewModel item)
+        [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public new async Task<IActionResult> GetAsync(int id)
         {
-            await base.DeleteAsync(item);
-            return RedirectToAction(nameof(AddressController.List), "Address");
+            return await base.GetAsync(id);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public new async Task<IActionResult> AddAsync([FromBody]AddressViewModel item)
+        {
+            return await base.AddAsync(item);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] AddressViewModel item)
+        {
+            item.Id = id;
+            return await base.UpdateAsync(item);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            return await base.DeleteAsync(new AddressViewModel { Id = id });
+          
         }
     }
 }

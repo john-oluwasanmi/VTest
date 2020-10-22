@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using V.Test.Web.App.Models;
 
-namespace V.Test.Web.App.Controllers
+namespace V.Test.Web.Api.Controllers
 {
     public class HomeController : Controller
     {

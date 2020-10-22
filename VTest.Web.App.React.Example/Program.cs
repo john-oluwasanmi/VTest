@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using V.Test.Web.App.Repository;
+using V.Test.Web.Api.Repository;
 
 namespace VTest.Web.App.React.Example
 {

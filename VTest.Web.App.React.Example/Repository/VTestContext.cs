@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.Entities;
 
-namespace V.Test.Web.App.Repository
+namespace V.Test.Web.Api.Repository
 {
     public class VTestsContext : DbContext
     {

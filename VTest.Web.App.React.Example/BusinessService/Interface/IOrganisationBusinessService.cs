@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using V.Test.Web.App.Entities;
+using V.Test.Web.Api.Entities;
 
-namespace V.Test.Web.App.BusinessService.Interface
+namespace V.Test.Web.Api.BusinessService.Interface
 {
     public   interface IOrganisationBusinessService : IBusinessService<Organisation>
     {

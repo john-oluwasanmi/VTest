@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.Entities.Interface;
 
-namespace V.Test.Web.App.Repository.Interface
+namespace V.Test.Web.Api.Repository.Interface
 {
     public interface IRepository<T> where T : IEntity
     {

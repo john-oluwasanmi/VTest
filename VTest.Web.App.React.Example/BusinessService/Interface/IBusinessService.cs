@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.Entities.Interface;
 
 
-namespace V.Test.Web.App.BusinessService.Interface
+namespace V.Test.Web.Api.BusinessService.Interface
 {
     public interface IBusinessService<T> where T : IEntity
     {

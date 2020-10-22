@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.Entities.Interface;
 
-namespace V.Test.Web.App.Entities
+namespace V.Test.Web.Api.Entities
 {
     public class Entity : IEntity
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace V.Test.Web.App.Entities.Interface
+namespace V.Test.Web.Api.Entities.Interface
 {
     public interface IEntity
     {

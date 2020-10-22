@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using V.Test.Web.App.Entities.Interface;
+using V.Test.Web.Api.Entities.Interface;
 
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlTypes;
-using V.Test.Web.App.Repository.Interface;
+using V.Test.Web.Api.Repository.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace V.Test.Web.App.Repository
+namespace V.Test.Web.Api.Repository
 {
     public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity, new()
