@@ -1,28 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using V.Test.Web.App.Core;
 using V.Test.Web.Api.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
-using V.Test.Web.App.Filter;
 namespace V.Test.Web.Api
 {
     public class Program
