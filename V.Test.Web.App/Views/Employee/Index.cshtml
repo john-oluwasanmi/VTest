@@ -13,9 +13,14 @@
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OrganisationId" class="control-label"></label>
-                <input asp-for="OrganisationId" class="form-control" />
-                <span asp-validation-for="OrganisationId" class="text-danger"></span>
+
+                <label asp-for="OrganisationId" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-8">
+                    <select asp-for="@Model.OrganisationId" asp-items="Model.OrganisationList" class="form-control">
+                        <option value="">Please select organisation</option>
+                    </select>
+                    <span asp-validation-for="@Model.OrganisationId" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>

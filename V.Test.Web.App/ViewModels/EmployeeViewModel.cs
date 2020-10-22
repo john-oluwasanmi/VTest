@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using V.Test.Web.App.Entities;
 
 namespace V.Test.Web.App.ViewModels
@@ -18,5 +20,7 @@ namespace V.Test.Web.App.ViewModels
         public string LastName { get; set; }
 
         public virtual Organisation Organisation { get; set; }
+
+        public IEnumerable<SelectListItem> OrganisationList { get; set; }
     }
 }
