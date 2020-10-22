@@ -91,12 +91,9 @@ namespace V.Test.Web.App.Repository
             {
                 using (var context = new VTestsContext(OptionsBuilder.Options))
                 {
-
-                    var query = context.Set<TEntity>().AsQueryable();
-                    var dd = await query.ToListAsync();
-
-                    var entity = await query.Where(x => x.Id == id && (x.IsDeleted == null || x.IsDeleted == false))
-                                        .SingleOrDefaultAsync();
+                    var entity = await context.Set<TEntity>()
+                                             .Where(x => x.Id == id && (x.IsDeleted == null || x.IsDeleted == false))
+                                             .SingleOrDefaultAsync();
 
                     var typeName = Entity?.GetType()?.Name;
                     VLogger.LogInformation($" Successfully retrieved {typeName} with the Id: '{entity?.Id} ");
