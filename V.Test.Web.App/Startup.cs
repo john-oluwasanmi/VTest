@@ -58,17 +58,17 @@ namespace V.Test.Web.App
             services.AddSingleton(mapper);
 
             services.AddAntiforgery();
-            services.AddHttpClient();
+         //   services.AddHttpClient();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+         //   services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+         //   services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.AddScoped<IUrlHelper>(x =>
-            {
-                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
-                var factory = x.GetRequiredService<IUrlHelperFactory>();
-                return factory.GetUrlHelper(actionContext);
-            });
+            //services.AddScoped<IUrlHelper>(x =>
+            //{
+            //    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+            //    var factory = x.GetRequiredService<IUrlHelperFactory>();
+            //    return factory.GetUrlHelper(actionContext);
+            //});
 
             Container.AddService(services);
             Container.AddRepository(services);
@@ -88,18 +88,18 @@ namespace V.Test.Web.App
                 app.UseHsts();
             }
 
-            app.Use(async (ctx, next) =>
-            {
-                await next();
+            //app.Use(async (ctx, next) =>
+            //{
+            //    await next();
 
-                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
-                {
-                    string originalPath = ctx.Request.Path.Value;
-                    ctx.Items["originalPath"] = originalPath;
-                    ctx.Request.Path = "/home/index";
-                    await next();
-                }
-            });
+            //    if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+            //    {
+            //        string originalPath = ctx.Request.Path.Value;
+            //        ctx.Items["originalPath"] = originalPath;
+            //        ctx.Request.Path = "/home/index";
+            //        await next();
+            //    }
+            //});
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

@@ -15,7 +15,7 @@ using V.Test.Web.App.ViewModels.Interface;
 namespace V.Test.Web.App.Controllers
 {
     public abstract class VTestControllerBase<TviewModel, TEntity, TBusinessServiceManager>
-        : ChurchControllerBase
+        : VTestControllerBase
         where TEntity : class, IEntity, new()
         where TviewModel : class, IViewModel, new()
         where TBusinessServiceManager : IBusinessService<TEntity>
@@ -215,13 +215,13 @@ namespace V.Test.Web.App.Controllers
     }
 
 
-    public abstract class ChurchControllerBase : Controller
+    public abstract class VTestControllerBase : Controller
     {
 
         protected readonly IConfiguration ConfigSettings;
         protected readonly ILogger VTestLogger;
 
-        public ChurchControllerBase(ILogger logger, IConfiguration configSetting)
+        public VTestControllerBase(ILogger logger, IConfiguration configSetting)
         {
             VTestLogger = logger;
             this.ConfigSettings = configSetting;
