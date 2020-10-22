@@ -81,7 +81,7 @@ namespace V.Test.Web.App.Controllers
 
             await base.UpdateAsync(item);
 
-            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId = item.OrganisationId });
         }
 
 
@@ -97,7 +97,7 @@ namespace V.Test.Web.App.Controllers
         public async Task<IActionResult> Delete([FromForm] EmployeeViewModel item)
         {
             await base.DeleteAsync(item);
-            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId = item.OrganisationId });
         }
 
         private async Task<List<OrganisationViewModel>> FetchOrganisation()

@@ -12,11 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrganisationId" class="control-label"></label>
-                <input asp-for="OrganisationId" class="form-control" />
-                <span asp-validation-for="OrganisationId" class="text-danger"></span>
-            </div>
+             
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -27,15 +23,16 @@
                 <input asp-for="LastName" class="form-control" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
-            
-           
-           
+
+
+
             <div class="form-group">
                 <a asp-action="View" asp-route-id="@Model.Id" class="btn btn-success   mr-1">Back</a>
                 <input type="submit" value="Save" class="btn btn-success   mr-1" />
             </div>
 
             @Html.HiddenFor(r => r.Id)
+            @Html.HiddenFor(r => r.OrganisationId)
         </form>
     </div>
 </div>
