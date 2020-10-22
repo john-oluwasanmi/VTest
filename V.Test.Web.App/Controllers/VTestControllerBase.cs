@@ -69,7 +69,7 @@ namespace V.Test.Web.App.Controllers
 
             var entity = await TrackedEntityForUpdateAsync(item);
 
-            SetUpdateAuditInformation(entity);
+            SetAuditInformation(entity, isUpdate: true);
 
             await BusinessServiceManager.UpdateAsync(entity);
         }

@@ -6,6 +6,7 @@ namespace V.Test.Web.App.ViewModels
     public partial class EmployeeViewModel : ViewModelBase
     {
         [Required]
+        [Display(Name = "Organisation")]
         public int OrganisationId { get; set; }
 
         [Required]
