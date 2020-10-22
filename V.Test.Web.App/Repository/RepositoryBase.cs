@@ -59,7 +59,7 @@ namespace V.Test.Web.App.Repository
             VLogger = logger;
 
             OptionsBuilder = new DbContextOptionsBuilder<VTestsContext>();
-            OptionsBuilder.UseSqlServer(configuration.GetConnectionString(""));
+            OptionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 
         }
         public virtual async Task<long> AddAsync(TEntity entity)

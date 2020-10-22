@@ -11,7 +11,7 @@ using V.Test.Web.App.Repository.Interface;
 
 namespace V.Test.Web.App.Repository
 {
-    public partial class EmployeeRepository : RepositoryBase<Employee>,
+    public   class EmployeeRepository : RepositoryBase<Employee>,
         IEmployeeRepository
     {
         public EmployeeRepository(IConfiguration configuration, ILogger<Employee> logger)

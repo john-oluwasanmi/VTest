@@ -15,6 +15,9 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using V.Test.Web.App.Filter;
+using V.Test.Web.App.BusinessService.Interface;
+using V.Test.Web.App.BusinessService;
+using V.Test.Web.App.Repository.Interface;
 
 namespace V.Test.Web.App
 {
@@ -22,10 +25,10 @@ namespace V.Test.Web.App
     {
         public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-              Configuration = configuration;
+            Configuration = configuration;
         }
 
-        
+
 
         public IConfiguration Configuration { get; }
 
@@ -40,7 +43,6 @@ namespace V.Test.Web.App
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -81,6 +83,7 @@ namespace V.Test.Web.App
                 return factory.GetUrlHelper(actionContext);
             });
 
+
             Container.AddService(services);
             Container.AddRepository(services);
         }
@@ -99,7 +102,7 @@ namespace V.Test.Web.App
                 app.UseHsts();
             }
 
-             
+
 
             app.Use(async (ctx, next) =>
             {

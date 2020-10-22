@@ -14,16 +14,16 @@ namespace V.Test.Web.App.Core
     {
         public static void AddService(IServiceCollection services)
         {
-            services.AddScoped<IAddressBusinessService, AddressBusinessService>();
-            services.AddScoped<IEmployeeBusinessService, EmployeeBusinessService>();
-            services.AddScoped<IOrganisationBusinessService, OrganisationBusinessService>();
+            services.AddSingleton<IAddressBusinessService, AddressBusinessService>();
+            services.AddSingleton<IEmployeeBusinessService, EmployeeBusinessService>();
+            services.AddSingleton<IOrganisationBusinessService, OrganisationBusinessService>();
         }
 
         public static void AddRepository(IServiceCollection services)
         {
-            services.AddScoped<IOrganisationRepository, OrganisationRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<AddressRepository, AddressRepository>();
+            services.AddSingleton<IOrganisationRepository, OrganisationRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IAddressRepository, AddressRepository>();
         }
     }
 }
