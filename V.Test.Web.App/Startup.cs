@@ -8,19 +8,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using V.Test.Web.App.Core;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
 using V.Test.Web.App.Repository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace V.Test.Web.App
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
-            Configuration = configuration;
+              Configuration = configuration;
         }
+
+        
 
         public IConfiguration Configuration { get; }
 
@@ -30,7 +34,7 @@ namespace V.Test.Web.App
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddDbContext<VTestsContext>(options =>
-                            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -58,24 +62,23 @@ namespace V.Test.Web.App
             services.AddSingleton(mapper);
 
             services.AddAntiforgery();
-         //   services.AddHttpClient();
 
-         //   services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-         //   services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            //services.AddScoped<IUrlHelper>(x =>
-            //{
-            //    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
-            //    var factory = x.GetRequiredService<IUrlHelperFactory>();
-            //    return factory.GetUrlHelper(actionContext);
-            //});
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
 
             Container.AddService(services);
             Container.AddRepository(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -88,18 +91,20 @@ namespace V.Test.Web.App
                 app.UseHsts();
             }
 
-            //app.Use(async (ctx, next) =>
-            //{
-            //    await next();
+             
 
-            //    if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
-            //    {
-            //        string originalPath = ctx.Request.Path.Value;
-            //        ctx.Items["originalPath"] = originalPath;
-            //        ctx.Request.Path = "/home/index";
-            //        await next();
-            //    }
-            //});
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+
+                if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
+                {
+                    string originalPath = ctx.Request.Path.Value;
+                    ctx.Items["originalPath"] = originalPath;
+                    ctx.Request.Path = "/home/index";
+                    await next();
+                }
+            });
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
