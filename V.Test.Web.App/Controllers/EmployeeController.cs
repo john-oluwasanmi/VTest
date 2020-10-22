@@ -14,7 +14,6 @@ namespace V.Test.Web.App.Controllers
 {
     public class EmployeeController : VTestControllerBase<EmployeeViewModel, Employee, IEmployeeBusinessService>
     {
-        private readonly IHtmlHelper _htmlHelper;
         private readonly IOrganisationBusinessService _organisationBusinessService;
 
         public EmployeeController(ILogger<Employee> logger

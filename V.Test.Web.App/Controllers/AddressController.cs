@@ -17,7 +17,6 @@ namespace V.Test.Web.App.Controllers
     public class AddressController : VTestControllerBase<AddressViewModel, Address, IAddressBusinessService>
     {
         private readonly IAddressBusinessService _addressBusinessService;
-        private readonly IHtmlHelper _htmlHelper;
 
         public AddressController(ILogger<Address> logger
                                 , IAddressBusinessService addressBusinessService
