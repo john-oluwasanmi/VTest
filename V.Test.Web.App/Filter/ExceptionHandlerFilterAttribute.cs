@@ -10,7 +10,6 @@ namespace V.Test.Web.App.Filter
 {
     public class ExceptionHandlerFilterAttribute : Attribute, IExceptionFilter
     {
-       // IConfigSetting _configSetting = null;
         public void OnException(ExceptionContext filterContext)
         {
             //var logger = ( )filterContext?.HttpContext?.RequestServices?.GetService(typeof( ));

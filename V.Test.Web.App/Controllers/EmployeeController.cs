@@ -99,15 +99,15 @@ namespace V.Test.Web.App.Controllers
             return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId = item.OrganisationId });
         }
 
-        private async Task<List<OrganisationViewModel>> FetchOrganisation()
+        private async Task<List<OrganisationViewModel>> FetchOrganisation(int pagenumber=1)
         {
-            List<Organisation> organisations = await _organisationBusinessService.ListAsync(1);
+            List<Organisation> organisations = await _organisationBusinessService.ListAsync(pagenumber);
             List<OrganisationViewModel> organisationsViewModels = ConvertEntityToViewModel<Organisation, OrganisationViewModel>(organisations);
             return organisationsViewModels;
         }
-        private async Task<IEnumerable<SelectListItem>> ListOrganisations()
+        private async Task<IEnumerable<SelectListItem>> ListOrganisations(int pagenumber = 1)
         {
-            var ordered = await FetchOrganisation();
+            var ordered = await FetchOrganisation(pagenumber);
 
             var organisationLists = from it in ordered
                                     select new SelectListItem

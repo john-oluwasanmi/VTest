@@ -113,19 +113,6 @@ namespace VTest.Web.App.React.Example
                 app.UseHsts();
             }
 
-            //app.Use(async (ctx, next) =>
-            //{
-            //    await next();
-
-            //    if (ctx.Response.StatusCode == 404 && !ctx.Response.HasStarted)
-            //    {
-            //        string originalPath = ctx.Request.Path.Value;
-            //        ctx.Items["originalPath"] = originalPath;
-            //        ctx.Request.Path = "/home/index";
-            //        await next();
-            //    }
-            //});
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();

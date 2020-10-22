@@ -10,11 +10,9 @@ namespace V.Test.Web.App.Filter
 {
     public class ExceptionHandlerFilterAttribute : Attribute, IExceptionFilter
     {
-       // IConfigSetting _configSetting = null;
         public void OnException(ExceptionContext filterContext)
         {
             //var logger = ( )filterContext?.HttpContext?.RequestServices?.GetService(typeof( ));
-            //_configSetting = (IConfigSetting)filterContext?.HttpContext?.RequestServices?.GetService(typeof(Icon));
 
             var exceptionMessage = filterContext?.Exception?.Message;
             var exceptionStackTrack = filterContext?.Exception?.StackTrace;
@@ -23,7 +21,7 @@ namespace V.Test.Web.App.Filter
             var actionName = filterContext?.RouteData?.Values["action"]?.ToString();
             var exceptionLogTime = DateTime.UtcNow;
 
-            var execption = JsonConvert.SerializeObject(filterContext?.Exception);
+          //  var execption = JsonConvert.SerializeObject(filterContext?.Exception);
 
             //logger.Error($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack}" +
             //             $",Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException}" +
