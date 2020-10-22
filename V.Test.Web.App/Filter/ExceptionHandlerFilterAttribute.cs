@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using V.Test.Web.App.Entities;
 
 namespace V.Test.Web.App.Filter
 {
@@ -13,7 +14,8 @@ namespace V.Test.Web.App.Filter
     {
         public void OnException(ExceptionContext filterContext)
         {
-            var logger = (ILogger)filterContext?.HttpContext?.RequestServices?.GetService(typeof(ILogger));
+            var logger = (ILogger<Entity>)filterContext?.HttpContext?.RequestServices?.GetService(typeof(ILogger<Entity>));
+
 
             var exceptionMessage = filterContext?.Exception?.Message;
             var exceptionStackTrack = filterContext?.Exception?.StackTrace;
