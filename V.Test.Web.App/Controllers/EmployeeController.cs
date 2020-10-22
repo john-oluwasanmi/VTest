@@ -44,7 +44,7 @@ namespace V.Test.Web.App.Controllers
 
             await base.AddAsync(item);
 
-            return RedirectToAction(nameof(EmployeeController.List), "Employee");
+            return RedirectToAction(nameof(EmployeeController.List), "Employee", new { organisationId  = item.OrganisationId});
         }
 
         [HttpGet]
