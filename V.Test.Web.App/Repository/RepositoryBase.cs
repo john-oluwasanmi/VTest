@@ -146,7 +146,6 @@ namespace V.Test.Web.App.Repository
 
         public virtual async Task UpdateAsync(TEntity entity)
         {
-            TEntity newEntity = new TEntity();
             try
             {
                 using (var context = new VTestsContext(OptionsBuilder.Options))
@@ -173,7 +172,9 @@ namespace V.Test.Web.App.Repository
 
             try
             {
+                entity = await GetAsync(entity.Id);
                 entity.IsDeleted = true;
+
                 await UpdateAsync(entity);
 
                 var typeName = Entity?.GetType()?.Name;
