@@ -20,13 +20,7 @@ namespace V.Test.Web.App.Repository
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<Organisation> Organisation { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=VTestDb;Integrated Security=True;Pooling=False");
-            }
-        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
