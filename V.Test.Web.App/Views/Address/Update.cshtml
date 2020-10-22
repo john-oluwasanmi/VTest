@@ -45,14 +45,14 @@
           @Html.HiddenFor(r=>r.Id)
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn  btn-success  pull-right mr-1"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="List">Back to List</a>
+    <a asp-action="List" class="btn btn-success   pull-left mr-1">Back</a>
 </div>
 
 @section Scripts {

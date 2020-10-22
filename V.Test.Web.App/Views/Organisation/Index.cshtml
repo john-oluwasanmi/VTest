@@ -27,7 +27,7 @@
 
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-success   pull-right mr-1" />
             </div>
 
             @Html.EditorFor(r => r.Address, "_Address")
@@ -36,7 +36,7 @@
 </div>
 
 <div>
-    <a asp-action="List">Back to List</a>
+    <a asp-action="List" class="btn btn-success   pull-left mr-1">Back</a>
 </div>
 
 @section Scripts {

@@ -4,10 +4,10 @@
     ViewData["Title"] = "List";
 }
 
-<h1>List Employee</h1>
+<h3>List Employee</h3>
 
 <p>
-    <a asp-action="Index">Create New Employee</a>
+    <a asp-action="Index" class="btn btn-success mt-50 pull-right mr-1">Create New Employee</a>
 </p>
 <table class="table">
     <thead>
@@ -52,9 +52,9 @@
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {   id=item.Id   }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id   }) |
-                @Html.ActionLink("Delete", "Delete", new {   id=item.Id   })
+                <a asp-action="Update" asp-route-id="@item.Id" class="btn btn-success  pull-right mr-1">Edit</a> |
+                <a asp-action="View" asp-route-id="@item.Id" class="btn btn-success  pull-right mr-1">View</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-success  pull-right mr-1">Delete</a>
             </td>
         </tr>
 }
