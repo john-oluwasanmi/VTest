@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace V.Test.Web.App.Filter
 {
@@ -12,7 +13,8 @@ namespace V.Test.Web.App.Filter
     {
         public void OnException(ExceptionContext filterContext)
         {
-            //var logger = ( )filterContext?.HttpContext?.RequestServices?.GetService(typeof( ));
+            var logger = (ILogger)filterContext?.HttpContext?.RequestServices?.GetService(typeof(ILogger));
+
 
             var exceptionMessage = filterContext?.Exception?.Message;
             var exceptionStackTrack = filterContext?.Exception?.StackTrace;
@@ -21,11 +23,9 @@ namespace V.Test.Web.App.Filter
             var actionName = filterContext?.RouteData?.Values["action"]?.ToString();
             var exceptionLogTime = DateTime.UtcNow;
 
-          //  var execption = JsonConvert.SerializeObject(filterContext?.Exception);
+            var execption = JsonConvert.SerializeObject(filterContext?.Exception, Formatting.None, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            logger.LogError($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack} ,Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException} , Time : {exceptionLogTime}, exception : {execption} ");
 
-            //logger.Error($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack}" +
-            //             $",Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException}" +
-            //             $", Time : {exceptionLogTime}, exception : {execption} ");
 
             filterContext.ExceptionHandled = true;
             var brandName = filterContext?.RouteData?.Values["brandName"]?.ToString();
