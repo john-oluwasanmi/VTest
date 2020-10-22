@@ -11,13 +11,9 @@ using V.Test.Web.App.Core;
 using V.Test.Web.App.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using V.Test.Web.App.Filter;
-using V.Test.Web.App.BusinessService.Interface;
-using V.Test.Web.App.BusinessService;
-using V.Test.Web.App.Repository.Interface;
 
 namespace V.Test.Web.App
 {
