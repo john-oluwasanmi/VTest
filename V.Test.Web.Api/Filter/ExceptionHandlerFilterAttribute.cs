@@ -27,12 +27,6 @@ namespace V.Test.Web.App.Filter
             var execption = JsonConvert.SerializeObject(filterContext?.Exception, Formatting.None, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             logger.LogError($"Message : {exceptionMessage}, StackTrack : {exceptionStackTrack} ,Controller : {controllerName}, Action : {actionName}, Inner Exception : {innerException} , Time : {exceptionLogTime}, exception : {execption} ");
 
-
-            filterContext.ExceptionHandled = true;
-            var brandName = filterContext?.RouteData?.Values["brandName"]?.ToString();
-
-            string url = $"~/Home/Error";
-            filterContext.Result = new RedirectResult(url);
             filterContext.ExceptionHandled = true;
 
             return;
