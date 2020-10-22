@@ -32,43 +32,36 @@ namespace V.Test.Web.Api.Controllers
         [ProducesResponseType(500)]
 
         [ProducesResponseType(404)]
-        public async Task<IActionResult> ListAsync( int pageNumber=1)
+        public async Task<IActionResult> ListAsync(int pageNumber = 1)
         {
             return await base.ListAsync(pageNumber);
         }
 
 
-        [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-
+        [HttpGet("ListByOrganisationAsync/{organisationId}")]
         [ProducesResponseType(404)]
         public async Task<IActionResult> ListByOrganisationAsync(int organisationId, int pageNumber = 1)
         {
             try
             {
-                CurrentPageNumber = pageNumber  ;
+                CurrentPageNumber = pageNumber;
 
-                if (User.Identity.IsAuthenticated)
+
+                var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId, CurrentPageNumber);
+
+                CurrentPageNumber = 0;
+
+                if (entities == null || !entities.Any())
                 {
-
-                    var entities = await BusinessServiceManager.ListByOrganisationAsync(organisationId, CurrentPageNumber);
-
-                    CurrentPageNumber = 0;
-
-                    if (entities == null || !entities.Any())
-                    {
-                        return NotFound();
-                    }
-
-                    var result = IMapper.Map<List<Employee>, List<EmployeeViewModel>>(entities);
-
-                    return Ok(result);
+                    return NotFound();
                 }
-                else
-                {
-                    return Unauthorized();
-                }
+
+                var result = IMapper.Map<List<Employee>, List<EmployeeViewModel>>(entities);
+
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
