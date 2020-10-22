@@ -7,7 +7,7 @@ namespace V.Test.Web.App.ViewModels
     public partial class OrganisationViewModel : ViewModelBase
     {
 
-        [Required]
+       
         public int? AddressId { get; set; }
 
         [Required]

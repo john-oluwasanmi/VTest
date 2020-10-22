@@ -13,6 +13,8 @@
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+            @Html.EditorFor(r => r.Address, "_Address")
+
             <div class="form-group">
                 <label asp-for="OrganisationName" class="control-label"></label>
                 <input asp-for="OrganisationName" class="form-control" />
@@ -31,7 +33,7 @@
                 <input type="submit" value="Create" class="btn btn-success   mr-1" />
             </div>
 
-            @Html.EditorFor(r => r.Address, "_Address")
+
         </form>
     </div>
 </div>

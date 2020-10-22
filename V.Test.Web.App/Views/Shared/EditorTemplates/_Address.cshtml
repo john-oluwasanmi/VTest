@@ -1,49 +1,49 @@
-﻿@model V.Test.Web.App.ViewModels.AddressViewModel
+﻿@model V.Test.Web.App.Entities.Address
 
-<h4><strong>Address</strong></h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AddressLine1" class="control-label"></label>
-                <input asp-for="AddressLine1" class="form-control" />
-                <span asp-validation-for="AddressLine1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressLine2" class="control-label"></label>
-                <input asp-for="AddressLine2" class="form-control" />
-                <span asp-validation-for="AddressLine2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressLine3" class="control-label"></label>
-                <input asp-for="AddressLine3" class="form-control" />
-                <span asp-validation-for="AddressLine3" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AddressLine4" class="control-label"></label>
-                <input asp-for="AddressLine4" class="form-control" />
-                <span asp-validation-for="AddressLine4" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Town" class="control-label"></label>
-                <input asp-for="Town" class="form-control" />
-                <span asp-validation-for="Town" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Postcode" class="control-label"></label>
-                <input asp-for="Postcode" class="form-control" />
-                <span asp-validation-for="Postcode" class="text-danger"></span>
-            </div>
+<div class="mt-5 ">
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4><strong>Address</strong></h4>
+    <hr />
+    <div class="row  ">
+        <div class="col-md-12">
+            <form asp-action="Index">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="AddressLine1" class="control-label"></label>
+                    <input asp-for="AddressLine1" class="form-control" />
+                    <span asp-validation-for="AddressLine1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AddressLine2" class="control-label"></label>
+                    <input asp-for="AddressLine2" class="form-control" />
+                    <span asp-validation-for="AddressLine2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AddressLine3" class="control-label"></label>
+                    <input asp-for="AddressLine3" class="form-control" />
+                    <span asp-validation-for="AddressLine3" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AddressLine4" class="control-label"></label>
+                    <input asp-for="AddressLine4" class="form-control" />
+                    <span asp-validation-for="AddressLine4" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Town" class="control-label"></label>
+                    <input asp-for="Town" class="form-control  " />
+                    <span asp-validation-for="Town" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Postcode" class="control-label"></label>
+                    <input asp-for="Postcode" class="form-control  " />
+                    <span asp-validation-for="Postcode" class="text-danger"></span>
+                </div>
+
+
+            </form>
+        </div>
     </div>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
