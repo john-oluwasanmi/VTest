@@ -35,6 +35,10 @@ namespace V.Test.Web.App.Controllers
             IMapper = ConfigureMapper().CreateMapper();
         }
 
+        protected double MaxPageNumber { get => Math.Ceiling((double)(TotalDbRecordCount / MaxPageSize)); }
+        protected int TotalDbRecordCount { get; set; }
+        protected short MaxPageSize { get => this.ConfigSettings.GetValue<short>("Settings:MaxPageSize"); }
+
         public virtual async Task AddAsync(TviewModel item)
         {
             TEntity result = MapViewModelToEntity(item);
